@@ -2,6 +2,15 @@ Changes:
 1) Change package name to "org.sunnycorp.sunnypn" to work with my Firebase notfication project;
 2) Add click_action handling for both background and foreground so that it can launch activity other than the default launcher. 
 
+I am able to send push notifications through both Firebase or AWS SNS. To send through Firebase, if you need to click_action, you can add a key/value pair as "click_action/org.sunnycorp.sunnypn.Main2Activity". To send through SNS, I cannot figure out why click_action does not work; the best I can reach now is by sending JSON content as 
+
+```
+{
+"GCM": "{ \"notification\": { \"title\": \"Sunny Message\",\"text\": \"test message\",\"sound\":\"default\"} }"
+}
+```
+Also got to set TTL time to some positive value say 8. Another note is that the GCM API key can be found as instructed here as [Firebase Server Key](https://stackoverflow.com/questions/38300450/fcm-with-aws-sns). 
+
 Firebase Cloud Messaging Quickstart
 ==============================
 
