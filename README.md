@@ -1,3 +1,7 @@
+Changes: 
+1) Change package name to "org.sunnycorp.sunnypn" to work with my Firebase notfication project;
+2) Add click_action handling for both background and foreground so that it can launch activity other than the default launcher. 
+
 Firebase Cloud Messaging Quickstart
 ==============================
 
