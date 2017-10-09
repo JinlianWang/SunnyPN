@@ -5,13 +5,22 @@ Android Push Notificstion Learning Notes
 1. Change package name to "org.sunnycorp.sunnypn" to work with my Firebase notfication project;
 1. Add click_action handling for both background and foreground so that it can launch activity other than the default launcher. 
 
-#### Click Action
-I am able to send push notifications through both Firebase or AWS SNS. To send through Firebase, if you need to click_action, you can add a key/value pair as "click_action/org.sunnycorp.sunnypn.Main2Activity". To send through SNS, I cannot figure out why click_action does not work; the best I can reach now is by sending JSON content as 
+#### Payload
+Not sure why; the payload can have "notification" node or "data" node and they work differently. When the payload contains "data" node, "FirebaseMessagingService" is always triggered, no matter whether the app is launched or not, or whether it is in the foreground or background. It works very consistently and may be the best way to go. It does require extra work by building a notification UI after receiving it (otherwise it would not show the notification in the notification center), on the other hand, it is super flexible. 
+
+If we use "notification" node in the payload, it seems that it would fire up "FirebaseMessagingService#onMessageReceived" only if the app is already launched; if not, it would launch t. 
+
+#### Firebase and AWS SNS integration
+
+##### Firebase
+* [Firebase Console](https://console.firebase.google.com/project/firebase-sunnypn/notification). It seems that Firebase Console only sends the payload through "notification" node, unless we use Firebase CLI as [Mastering Firebase Notifications](https://medium.com/@Miqubel/mastering-firebase-notifications-36a3ffe57c41).
+* [AWS SNS Console](https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/applications/arn:aws:sns:us-west-2:221118179913:app/GCM/SunnyPNAndroid). AWS SNS Console sends out the payload through "data" node, and the payload shall be something like below: 
 
 ```
 {
-"GCM": "{ \"notification\": { \"title\": \"Sunny Message\",\"text\": \"test message\",\"sound\":\"default\"} }"
+"GCM": "{ \"data\": { \"title\": \"Sunny Message\",\"text\": \"test message\",\"sound\":\"default\",\"click_action\":\"org.sunnycorp.sunnypn.Main2Activity\"} }"
 }
+
 ```
 Also got to set TTL time to some positive value say 8. Another note is that the GCM API key can be found as instructed here as [Firebase Server Key](https://stackoverflow.com/questions/38300450/fcm-with-aws-sns). 
 
