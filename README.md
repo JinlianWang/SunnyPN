@@ -1,3 +1,41 @@
+Android Push Notificstion Learning Notes
+============================================
+
+#### Changes 
+1. Change package name to "org.sunnycorp.sunnypn" to work with my Firebase notfication project;
+1. Add click_action handling for both background and foreground so that it can launch activity other than the default launcher. 
+
+#### Payload
+Not sure why; the payload can have "notification" node or "data" node and they work differently. When the payload contains "data" node, "FirebaseMessagingService" is always triggered, no matter whether the app is launched or not, or whether it is in the foreground or background. It works very consistently and may be the best way to go. It does require extra work by building a notification UI after receiving it (otherwise it would not show the notification in the notification center), on the other hand, it is super flexible. 
+
+If we use "notification" node in the payload, it seems that it would fire up "FirebaseMessagingService#onMessageReceived" only if the app is already launched and in the foreground; if not(either the app is not launched yet, or it is launched but in background), the notification would show in notification center (without the need to build notification interface through notification builder). 
+
+In summary, seems like "notification" node as payload is an old way of doing things. It is not preferred for 2 reasons: 1) It is not as consisent as "data" would allow handling in one place, that is, "FirebaseMessagingService#onMessageReceived". 2) It is not as flexible, because we cannot create our own notification interface. Using "data" would allow us to fire up notification interfaces built through notification builder, in many default styles (big text, big picture, inbox, etc) and even customized RemoteViews). 
+
+#### Firebase and AWS SNS integration
+
+##### Firebase
+* [Firebase Console](https://console.firebase.google.com/project/firebase-sunnypn/notification). It seems that Firebase Console only sends the payload through "notification" node, unless we use Firebase CLI as [Mastering Firebase Notifications](https://medium.com/@Miqubel/mastering-firebase-notifications-36a3ffe57c41).
+* [AWS SNS Console](https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/applications/arn:aws:sns:us-west-2:221118179913:app/GCM/SunnyPNAndroid). AWS SNS Console sends out the payload through "data" node, and the payload shall be something like below: 
+
+```
+{
+"GCM": "{ \"data\": { \"title\": \"Sunny Message\",\"text\": \"test message\",\"sound\":\"default\",\"click_action\":\"org.sunnycorp.sunnypn.Main2Activity\"} }"
+}
+
+```
+Also got to set TTL time to some positive value say 8. Another note is that the GCM API key can be found as instructed here as [Firebase Server Key](https://stackoverflow.com/questions/38300450/fcm-with-aws-sns). 
+
+#### References 
+* [Android Developers Training - Notifying the User](https://developer.android.com/training/notify-user/index.html)
+* How to show custom layout for remote push notificsation, see [StackOverflow](https://stackoverflow.com/questions/36945702/how-to-show-custom-ui-for-a-gcm-push-notification), like [Google Cloud Messaging Overview](http://www.androiddocs.com/google/gcm/gcm.html), `It does not provide any built-in user interface or other handling for message data. GCM simply passes raw message data received straight to the Android application, which has full control of how to handle it. For example, the application might post a notification, display a custom user interface, or silently sync data`.
+* [How to create a Custom Notification Layout in android?](https://stackoverflow.com/questions/41888161/how-to-create-a-custom-notification-layout-in-android)
+* [Android Notification API Guide](https://developer.android.com/guide/topics/ui/notifiers/notifications.html)
+* [Getting Started With Push Notifications on Android](https://github.com/hathibelagal/GCM-Push-Notifications)
+* [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)
+* [Amazon Simple Notification Service (SNS)](https://aws.amazon.com/sns/)
+* [Tuts+ tutorial about Android O's notification channels](https://github.com/chikecodes/tutsplus-Android-o-notification-channels) and a similar one at Android Authority, [Creating an Android 8.0 Oreo app: Implementing Notification Channels](http://www.androidauthority.com/android-8-0-oreo-app-implementing-notification-channels-801097/)
+
 Firebase Cloud Messaging Quickstart
 ==============================
 
