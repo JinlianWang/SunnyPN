@@ -16,6 +16,7 @@
 
 package org.sunnycorp.sunnypn;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -23,6 +24,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -76,10 +78,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map<String, String> data = remoteMessage.getData();
-            if (data.containsKey("click_action")) {
-                MyFirebaseMessagingService.startActivity(data.get("click_action"), null, this);
-            }
-
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                            .setContentTitle(data.get("title"))
+                            .setContentText(data.get("text"))
+                            .setPriority(Notification.PRIORITY_HIGH)
+                            .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                            .setAutoCancel(true);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                    new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.setContentIntent(contentIntent);
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.notify(100, mBuilder.build());
+            Log.d(TAG,data.get("click_action"));
         }
 
         // Check if message contains a notification payload.
