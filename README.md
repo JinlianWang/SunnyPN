@@ -1,3 +1,6 @@
+Android Push Notificstion Learning Notes
+============================================
+
 #### Changes 
 1. Change package name to "org.sunnycorp.sunnypn" to work with my Firebase notfication project;
 1. Add click_action handling for both background and foreground so that it can launch activity other than the default launcher. 
@@ -13,7 +16,8 @@ I am able to send push notifications through both Firebase or AWS SNS. To send t
 Also got to set TTL time to some positive value say 8. Another note is that the GCM API key can be found as instructed here as [Firebase Server Key](https://stackoverflow.com/questions/38300450/fcm-with-aws-sns). 
 
 #### References 
-* How to show custom layout for remote push notificsation, see [StackOverflow](https://stackoverflow.com/questions/36945702/how-to-show-custom-ui-for-a-gcm-push-notification)
+* How to show custom layout for remote push notificsation, see [StackOverflow](https://stackoverflow.com/questions/36945702/how-to-show-custom-ui-for-a-gcm-push-notification), like [Google Cloud Messaging Overview](http://www.androiddocs.com/google/gcm/gcm.html), `It does not provide any built-in user interface or other handling for message data. GCM simply passes raw message data received straight to the Android application, which has full control of how to handle it. For example, the application might post a notification, display a custom user interface, or silently sync data`.
+* [How to create a Custom Notification Layout in android?](https://stackoverflow.com/questions/41888161/how-to-create-a-custom-notification-layout-in-android)
 * [Android Notification API Guide](https://developer.android.com/guide/topics/ui/notifiers/notifications.html)
 * [Getting Started With Push Notifications on Android](https://github.com/hathibelagal/GCM-Push-Notifications)
 * [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)
