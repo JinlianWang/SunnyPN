@@ -8,7 +8,9 @@ Android Push Notificstion Learning Notes
 #### Payload
 Not sure why; the payload can have "notification" node or "data" node and they work differently. When the payload contains "data" node, "FirebaseMessagingService" is always triggered, no matter whether the app is launched or not, or whether it is in the foreground or background. It works very consistently and may be the best way to go. It does require extra work by building a notification UI after receiving it (otherwise it would not show the notification in the notification center), on the other hand, it is super flexible. 
 
-If we use "notification" node in the payload, it seems that it would fire up "FirebaseMessagingService#onMessageReceived" only if the app is already launched; if not, it would launch t. 
+If we use "notification" node in the payload, it seems that it would fire up "FirebaseMessagingService#onMessageReceived" only if the app is already launched and in the foreground; if not(either the app is not launched yet, or it is launched but in background), the notification would show in notification center (without the need to build notification interface through notification builder). 
+
+In summary, seems like "notification" node as payload is an old way of doing things. It is not preferred for 2 reasons: 1) It is not as consisent as "data" would allow handling in one place, that is, "FirebaseMessagingService#onMessageReceived". 2) It is not as flexible, because we cannot create our own notification interface. Using "data" would allow us to fire up notification interfaces built through notification builder, in many default styles (big text, big picture, inbox, etc) and even customized RemoteViews). 
 
 #### Firebase and AWS SNS integration
 
