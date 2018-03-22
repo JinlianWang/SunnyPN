@@ -35,6 +35,7 @@ Also got to set TTL time to some positive value say 8. Another note is that the 
 * [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)
 * [Amazon Simple Notification Service (SNS)](https://aws.amazon.com/sns/)
 * [Tuts+ tutorial about Android O's notification channels](https://github.com/chikecodes/tutsplus-Android-o-notification-channels) and a similar one at Android Authority, [Creating an Android 8.0 Oreo app: Implementing Notification Channels](http://www.androidauthority.com/android-8-0-oreo-app-implementing-notification-channels-801097/)
+* [Push Notifications:Getting a Server Key](https://pusher.com/docs/push_notifications/android/gcm#getting-a-server-key)
 
 Firebase Cloud Messaging Quickstart
 ==============================
